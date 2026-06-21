@@ -1,0 +1,86 @@
+class Node {
+  constructor(data) {
+    this.data = data;
+    this.left = null;
+    this.right = null;
+  }
+}
+
+class Tree {
+  constructor(array) {
+    this.root = this.buildTree(array);
+  }
+
+  buildTree(array) {
+    if (array.length === 0) return null;
+
+    const unique_array = Array.from(new Set([...array].sort((a, b) => a - b)));
+
+    const buildRecursive = (start, end) => {
+      if (start > end) {
+        return null;
+      }
+
+      const mid = Math.floor((start + end) / 2);
+      const node = new Node(unique_array[mid]);
+
+      node.left = buildRecursive(start, mid - 1);
+      node.right = buildRecursive(mid + 1, end);
+
+      return node;
+    };
+
+    return buildRecursive(0, unique_array.length - 1);
+  }
+
+  includes(value) {
+    let r = this.root;
+    while (r !== null) {
+      if (value === r.data) {
+        return true;
+      } else if (value < r.data) {
+        r = r.left;
+      } else {
+        r = r.right;
+      }
+    }
+    return false;
+  }
+
+  insert(value) {
+    if (this.root === null) return (this.root = new Node(value));
+    let r = this.root;
+    while (r !== null) {
+      if (r.data === value) return;
+      if (r.data > value && r.left !== null) {
+        r = r.left;
+      } else if (r.data < value && r.right !== null) {
+        r = r.right;
+      } else break;
+    }
+
+    if (r.data > value) r.left = new Node(value);
+    else r.right = new Node(value);
+  }
+}
+
+const prettyPrint = (node, prefix = "", isLeft = true) => {
+  if (node === null || node === undefined) {
+    return;
+  }
+
+  prettyPrint(node.right, `${prefix}${isLeft ? "│   " : "    "}`, false);
+  console.log(`${prefix}${isLeft ? "└── " : "┌── "}${node.data}`);
+  prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
+};
+
+const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
+prettyPrint(tree.root);
+// console.log(tree.includes(8));
+console.log("--- inserting duplicate 8 ---");
+tree.insert(8);
+prettyPrint(tree.root);
+
+tree.insert(100); // new value, should be added
+console.log("--- after inserting 100 ---");
+prettyPrint(tree.root);
