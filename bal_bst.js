@@ -62,6 +62,36 @@ class Tree {
     if (r.data > value) r.left = new Node(value);
     else r.right = new Node(value);
   }
+
+  deleteItem(value) {
+    this.root = this.deleteRecursive(this.root, value);
+  }
+
+  deleteRecursive(node, value) {
+    if (node === null) return null;
+
+    if (value < node.data) {
+      node.left = this.deleteRecursive(node.left, value);
+    } else if (value > node.data) {
+      node.right = this.deleteRecursive(node.right, value);
+    } else {
+      if (node.left === null && node.right === null) {
+        return null;
+      } else if (node.left === null) {
+        return node.right;
+      } else if (node.right === null) {
+        return node.left;
+      } else {
+        let curr = node.right;
+        while (curr !== null && curr.left !== null) {
+          curr = curr.left;
+        }
+        node.data = curr.data;
+        node.right = this.deleteRecursive(node.right, curr.data);
+      }
+    }
+    return node;
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -77,10 +107,26 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
 prettyPrint(tree.root);
 // console.log(tree.includes(8));
-console.log("--- inserting duplicate 8 ---");
-tree.insert(8);
+// console.log("--- inserting duplicate 8 ---");
+// tree.insert(8);
+// prettyPrint(tree.root);
+
+// tree.insert(100);
+// console.log("--- after inserting 100 ---");
+// prettyPrint(tree.root);
+
+tree.deleteItem(3);
+console.log('--- after deleting leaf 3 ---');
 prettyPrint(tree.root);
 
-tree.insert(100); // new value, should be added
-console.log("--- after inserting 100 ---");
+tree.deleteItem(67);
+console.log('--- after deleting 67 (two children) ---');
+prettyPrint(tree.root);
+
+tree.deleteItem(8);
+console.log('--- after deleting root 8 ---');
+prettyPrint(tree.root);
+
+tree.deleteItem(999);
+console.log('--- after deleting nonexistent 999 ---');
 prettyPrint(tree.root);
