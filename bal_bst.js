@@ -75,22 +75,31 @@ class Tree {
     } else if (value > node.data) {
       node.right = this.deleteRecursive(node.right, value);
     } else {
-      if (node.left === null && node.right === null) {
-        return null;
-      } else if (node.left === null) {
-        return node.right;
-      } else if (node.right === null) {
-        return node.left;
-      } else {
+      if (node.left === null && node.right === null) return null;
+      else if (node.left === null) return node.right;
+      else if (node.right === null) return node.left;
+      else {
         let curr = node.right;
-        while (curr !== null && curr.left !== null) {
-          curr = curr.left;
-        }
+        while (curr !== null && curr.left !== null) curr = curr.left;
         node.data = curr.data;
         node.right = this.deleteRecursive(node.right, curr.data);
       }
     }
     return node;
+  }
+
+  levelOrderForEach(callback) {
+    if (typeof callback !== "function")
+      throw new Error("A callback is required");
+    if (this.root === null) return null;
+    const queue = [];
+    queue.push(this.root);
+    while (queue.length !== 0) {
+      const front = queue.shift();
+      callback(front.data);
+      if (front.left !== null) queue.push(front.left);
+      if (front.right !== null) queue.push(front.right);
+    }
   }
 }
 
@@ -115,18 +124,21 @@ prettyPrint(tree.root);
 // console.log("--- after inserting 100 ---");
 // prettyPrint(tree.root);
 
-tree.deleteItem(3);
-console.log('--- after deleting leaf 3 ---');
-prettyPrint(tree.root);
+// tree.deleteItem(3);
+// console.log("--- after deleting leaf 3 ---");
+// prettyPrint(tree.root);
 
-tree.deleteItem(67);
-console.log('--- after deleting 67 (two children) ---');
-prettyPrint(tree.root);
+// tree.deleteItem(67);
+// console.log("--- after deleting 67 (two children) ---");
+// prettyPrint(tree.root);
 
-tree.deleteItem(8);
-console.log('--- after deleting root 8 ---');
-prettyPrint(tree.root);
+// tree.deleteItem(8);
+// console.log("--- after deleting root 8 ---");
+// prettyPrint(tree.root);
 
-tree.deleteItem(999);
-console.log('--- after deleting nonexistent 999 ---');
-prettyPrint(tree.root);
+// tree.deleteItem(999);
+// console.log("--- after deleting nonexistent 999 ---");
+// prettyPrint(tree.root);
+const result = []
+tree.levelOrderForEach((value) => result.push(value));
+console.log(result);
