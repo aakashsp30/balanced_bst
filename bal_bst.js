@@ -101,6 +101,45 @@ class Tree {
       if (front.right !== null) queue.push(front.right);
     }
   }
+
+  inOrderForEach(callback) {
+    if (typeof callback !== "function") throw new Error("A callback is required");
+
+    const traverse = (node) => {
+      if (node === null) return;
+      traverse(node.left);
+      callback(node.data);
+      traverse(node.right);
+    };
+
+    traverse(this.root);
+  }
+
+  preOrderForEach(callback) {
+    if (typeof callback !== "function") throw new Error("A callback is required");
+
+    const traverse = (node) => {
+      if (node === null) return;
+      callback(node.data);
+      traverse(node.left);
+      traverse(node.right);
+    };
+
+    traverse(this.root);
+  }
+
+  postOrderForEach(callback) {
+    if (typeof callback !== "function") throw new Error("A callback is required");
+
+    const traverse = (node) => {
+      if (node === null) return;
+      traverse(node.left);
+      traverse(node.right);
+      callback(node.data);
+    };
+
+    traverse(this.root);
+  }
 }
 
 const prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -139,6 +178,14 @@ prettyPrint(tree.root);
 // tree.deleteItem(999);
 // console.log("--- after deleting nonexistent 999 ---");
 // prettyPrint(tree.root);
-const result = []
-tree.levelOrderForEach((value) => result.push(value));
-console.log(result);
+// const result = [];
+// tree.levelOrderForEach((value) => result.push(value));
+// console.log(result);
+
+const inOrder = [], preOrder = [], postOrder = []
+tree.inOrderForEach(v=>inOrder.push(v))
+tree.preOrderForEach(v=>preOrder.push(v))
+tree.postOrderForEach(v=>postOrder.push(v))
+console.log('inOrder:', inOrder)
+console.log('preOrder:', preOrder)
+console.log('postOrder:', postOrder)
