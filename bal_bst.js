@@ -103,7 +103,8 @@ class Tree {
   }
 
   inOrderForEach(callback) {
-    if (typeof callback !== "function") throw new Error("A callback is required");
+    if (typeof callback !== "function")
+      throw new Error("A callback is required");
 
     const traverse = (node) => {
       if (node === null) return;
@@ -116,7 +117,8 @@ class Tree {
   }
 
   preOrderForEach(callback) {
-    if (typeof callback !== "function") throw new Error("A callback is required");
+    if (typeof callback !== "function")
+      throw new Error("A callback is required");
 
     const traverse = (node) => {
       if (node === null) return;
@@ -129,7 +131,8 @@ class Tree {
   }
 
   postOrderForEach(callback) {
-    if (typeof callback !== "function") throw new Error("A callback is required");
+    if (typeof callback !== "function")
+      throw new Error("A callback is required");
 
     const traverse = (node) => {
       if (node === null) return;
@@ -139,6 +142,44 @@ class Tree {
     };
 
     traverse(this.root);
+  }
+
+  height(value) {
+    let r = this.root;
+
+    const heightOfNode = (node) => {
+      if (node === null) {
+        return -1;
+      }
+      return 1 + Math.max(heightOfNode(node.left), heightOfNode(node.right));
+    };
+
+    while (r !== null) {
+      if (value === r.data) {
+        return heightOfNode(r);
+      } else if (value < r.data) {
+        r = r.left;
+      } else {
+        r = r.right;
+      }
+    }
+    return undefined;
+  }
+
+  depth(value) {
+    let r = this.root;
+    let c = 0;
+    while (r !== null) {
+      if (value === r.data) {
+        return c;
+      } else if (value < r.data) {
+        r = r.left;
+      } else {
+        r = r.right;
+      }
+      c++;
+    }
+    return undefined;
   }
 }
 
@@ -153,7 +194,7 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
 };
 
 const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-prettyPrint(tree.root);
+// prettyPrint(tree.root);
 // console.log(tree.includes(8));
 // console.log("--- inserting duplicate 8 ---");
 // tree.insert(8);
@@ -182,10 +223,26 @@ prettyPrint(tree.root);
 // tree.levelOrderForEach((value) => result.push(value));
 // console.log(result);
 
-const inOrder = [], preOrder = [], postOrder = []
-tree.inOrderForEach(v=>inOrder.push(v))
-tree.preOrderForEach(v=>preOrder.push(v))
-tree.postOrderForEach(v=>postOrder.push(v))
-console.log('inOrder:', inOrder)
-console.log('preOrder:', preOrder)
-console.log('postOrder:', postOrder)
+// const inOrder = [],
+//   preOrder = [],
+//   postOrder = [];
+// tree.inOrderForEach((v) => inOrder.push(v));
+// tree.preOrderForEach((v) => preOrder.push(v));
+// tree.postOrderForEach((v) => postOrder.push(v));
+// console.log("inOrder:", inOrder);
+// console.log("preOrder:", preOrder);
+// console.log("postOrder:", postOrder);
+
+// prettyPrint(tree.root);
+// console.log(tree.height(8));
+// console.log(tree.height(4));
+// console.log(tree.height(1));
+// console.log(tree.height(3));
+// console.log(tree.height(999));
+
+prettyPrint(tree.root);
+console.log(tree.depth(8));
+console.log(tree.depth(4));
+console.log(tree.depth(67));
+console.log(tree.depth(3));
+console.log(tree.depth(999));
