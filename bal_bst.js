@@ -217,61 +217,28 @@ const prettyPrint = (node, prefix = "", isLeft = true) => {
   prettyPrint(node.left, `${prefix}${isLeft ? "    " : "│   "}`, true);
 };
 
-const tree = new Tree([1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324]);
-// prettyPrint(tree.root);
-// console.log(tree.includes(8));
-// console.log("--- inserting duplicate 8 ---");
-// tree.insert(8);
-// prettyPrint(tree.root);
 
-// tree.insert(100);
-// console.log("--- after inserting 100 ---");
-// prettyPrint(tree.root);
+const randomArray = (size) =>
+  Array.from({ length: size }, () => Math.floor(Math.random() * 100));
 
-// tree.deleteItem(3);
-// console.log("--- after deleting leaf 3 ---");
-// prettyPrint(tree.root);
-
-// tree.deleteItem(67);
-// console.log("--- after deleting 67 (two children) ---");
-// prettyPrint(tree.root);
-
-// tree.deleteItem(8);
-// console.log("--- after deleting root 8 ---");
-// prettyPrint(tree.root);
-
-// tree.deleteItem(999);
-// console.log("--- after deleting nonexistent 999 ---");
-// prettyPrint(tree.root);
-// const result = [];
-// tree.levelOrderForEach((value) => result.push(value));
-// console.log(result);
-
-// const inOrder = [],
-//   preOrder = [],
-//   postOrder = [];
-// tree.inOrderForEach((v) => inOrder.push(v));
-// tree.preOrderForEach((v) => preOrder.push(v));
-// tree.postOrderForEach((v) => postOrder.push(v));
-// console.log("inOrder:", inOrder);
-// console.log("preOrder:", preOrder);
-// console.log("postOrder:", postOrder);
-
-// prettyPrint(tree.root);
-// console.log(tree.height(8));
-// console.log(tree.height(4));
-// console.log(tree.height(1));
-// console.log(tree.height(3));
-// console.log(tree.height(999));
-
-// prettyPrint(tree.root);
-// console.log(tree.depth(8));
-// console.log(tree.depth(4));
-// console.log(tree.depth(67));
-// console.log(tree.depth(3));
-// console.log(tree.depth(999));
-
+const tree = new Tree(randomArray(5));
 console.log(tree.isBalanced());
+prettyPrint(tree.root);
+
+const levelOrder = [];
+const preOrder = [];
+const postOrder = [];
+const inOrder = [];
+
+tree.levelOrderForEach((v) => levelOrder.push(v));
+tree.preOrderForEach((v) => preOrder.push(v));
+tree.postOrderForEach((v) => postOrder.push(v));
+tree.inOrderForEach((v) => inOrder.push(v));
+
+console.log("levelOrder:", levelOrder);
+console.log("preOrder:", preOrder);
+console.log("postOrder:", postOrder);
+console.log("inOrder:", inOrder);
 
 tree.insert(200);
 tree.insert(300);
@@ -279,9 +246,24 @@ tree.insert(400);
 tree.insert(500);
 
 console.log(tree.isBalanced());
-prettyPrint(tree.root)
+prettyPrint(tree.root);
 
 tree.rebalance();
 
 console.log(tree.isBalanced());
-prettyPrint(tree.root)
+prettyPrint(tree.root);
+
+const levelOrder2 = [];
+const preOrder2 = [];
+const postOrder2 = [];
+const inOrder2 = [];
+
+tree.levelOrderForEach((v) => levelOrder2.push(v));
+tree.preOrderForEach((v) => preOrder2.push(v));
+tree.postOrderForEach((v) => postOrder2.push(v));
+tree.inOrderForEach((v) => inOrder2.push(v));
+
+console.log("levelOrder:", levelOrder2);
+console.log("preOrder:", preOrder2);
+console.log("postOrder:", postOrder2);
+console.log("inOrder:", inOrder2);
